@@ -501,24 +501,49 @@
 
         // Encryption
         const KEY = 'MySecretValentineKey2026!@#$%';
+        // function encrypt(text) {
+        //     let e = '';
+        //     for (let i = 0; i < text.length; i++) {
+        //         e += String.fromCharCode(text.charCodeAt(i) ^ KEY.charCodeAt(i % KEY.length));
+        //     }
+        //     return btoa(e);
+        // }
+        // function decrypt(encrypted) {
+        //     try {
+        //         const decoded = atob(encrypted);
+        //         let d = '';
+        //         for (let i = 0; i < decoded.length; i++) {
+        //             d += String.fromCharCode(decoded.charCodeAt(i) ^ KEY.charCodeAt(i % KEY.length));
+        //         }
+        //         return d;
+        //     } catch { return encrypted; }
+        // }
+
         function encrypt(text) {
-            let e = '';
-            for (let i = 0; i < text.length; i++) {
-                e += String.fromCharCode(text.charCodeAt(i) ^ KEY.charCodeAt(i % KEY.length));
+            const encoded = new TextEncoder().encode(text);
+            let result = '';
+            for (let i = 0; i < encoded.length; i++) {
+                result += String.fromCharCode(encoded[i] ^ KEY.charCodeAt(i % KEY.length));
             }
-            return btoa(e);
+            return btoa(result);
         }
+        
         function decrypt(encrypted) {
             try {
                 const decoded = atob(encrypted);
-                let d = '';
+                const bytes = new Uint8Array(decoded.length);
+        
                 for (let i = 0; i < decoded.length; i++) {
-                    d += String.fromCharCode(decoded.charCodeAt(i) ^ KEY.charCodeAt(i % KEY.length));
+                    bytes[i] = decoded.charCodeAt(i) ^ KEY.charCodeAt(i % KEY.length);
                 }
-                return d;
-            } catch { return encrypted; }
+        
+                return new TextDecoder().decode(bytes);
+            } catch {
+                return encrypted;
+            }
         }
 
+        
         // Status
         function updateStatus(status, text) {
             const dot = document.getElementById('statusDot');

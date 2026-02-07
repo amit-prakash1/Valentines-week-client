@@ -642,7 +642,7 @@
             container.innerHTML = messages.map(msg => {
                 const text = msg.encrypted ? decrypt(msg.text) : msg.text;
                 const isClient = msg.from === 'client';
-                const sender = isClient ? 'You' : 'Your Love';
+                const sender = isClient ? 'You' : 'Aradhya';
                 
                 return `
                     <div class="chat-message ${isClient ? 'sent' : 'received'}">
